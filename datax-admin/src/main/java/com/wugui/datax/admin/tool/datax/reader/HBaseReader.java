@@ -26,11 +26,11 @@ public class HBaseReader extends BaseReaderPlugin implements DataxReaderInterfac
     confige.put("hbase.zookeeper.quorum",plugin.getReaderHbaseConfig());
     parameterObj.put("hbaseConfig", confige);
     parameterObj.put("table", plugin.getReaderTable());
-    parameterObj.put("mode", plugin.getReaderMode());
+    parameterObj.put("mode", "normal");
     parameterObj.put("column", plugin.getColumns());
-    if(StringUtils.isNotBlank(plugin.getReaderRange().getStartRowkey()) && StringUtils.isNotBlank(plugin.getReaderRange().getEndRowkey())){
+    /*if(StringUtils.isNotBlank(plugin.getReaderRange().getStartRowkey()) && StringUtils.isNotBlank(plugin.getReaderRange().getEndRowkey())){
       parameterObj.put("range", plugin.getReaderRange());
-    }
+    }*/
     parameterObj.put("maxVersion", plugin.getReaderMaxVersion());
     readerObj.put("parameter", parameterObj);
     return readerObj;

@@ -27,12 +27,13 @@ public class HBaseWriter extends BaseWriterPlugin implements DataxWriterInterfac
         confige.put("hbase.zookeeper.quorum", plugin.getWriterHbaseConfig());
         parameterObj.put("hbaseConfig", confige);
         parameterObj.put("table", plugin.getWriterTable());
-        parameterObj.put("mode", plugin.getWriterMode());
+        //parameterObj.put("mode", plugin.getWriterMode());
+        parameterObj.put("mode", "normal");
         parameterObj.put("column", plugin.getColumns());
         parameterObj.put("rowkeyColumn", JSON.parseArray(plugin.getWriterRowkeyColumn()));
-        if (StringUtils.isNotBlank(plugin.getWriterVersionColumn().getValue())) {
+        /*if (StringUtils.isNotBlank(plugin.getWriterVersionColumn().getValue())) {
             parameterObj.put("versionColumn", plugin.getWriterVersionColumn());
-        }
+        }*/
         writerObj.put("parameter", parameterObj);
         return writerObj;
     }

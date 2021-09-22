@@ -34,13 +34,14 @@ public class HBaseQueryTool {
                 getDataSource(jobDatasource);
             }
         }
-        LocalCacheUtil.set(jobDatasource.getDatasourceName(), connection, 4 * 60 * 60 * 1000);
+        LocalCacheUtil.set(jobDatasource.getDatasourceName(), connection, 5 * 1000);
     }
 
     private void getDataSource(JobDatasource jobDatasource) throws IOException {
         String[] zkAdress = jobDatasource.getZkAdress().split(Constants.SPLIT_SCOLON);
         conf.set("hbase.zookeeper.quorum", zkAdress[0]);
         conf.set("hbase.zookeeper.property.clientPort", zkAdress[1]);
+        conf.set("hbase.client.retries.number","3");
         connection = ConnectionFactory.createConnection(conf, pool);
         admin = connection.getAdmin();
     }

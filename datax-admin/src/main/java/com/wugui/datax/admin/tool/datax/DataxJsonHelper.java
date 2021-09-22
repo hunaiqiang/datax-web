@@ -1,6 +1,7 @@
 package com.wugui.datax.admin.tool.datax;
 
 
+import com.alibaba.fastjson.JSON;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
@@ -168,7 +169,7 @@ public class DataxJsonHelper implements DataxJsonInterface {
         } else if (JdbcConstants.MONGODB.equals(datasource)) {
             writerPlugin = new MongoDBWriter();
             buildWriter = this.buildMongoDBWriter();
-        }else if (DB2.equals(datasource)) {
+        } else if (DB2.equals(datasource)) {
             writerPlugin = new DB2Writer();
             buildWriter = this.buildWriter();
         }
@@ -291,7 +292,7 @@ public class DataxJsonHelper implements DataxJsonInterface {
         }
         dataxHbasePojo.setColumns(columns);
         dataxHbasePojo.setReaderHbaseConfig(readerDatasource.getZkAdress());
-        String readerTable=!CollectionUtils.isEmpty(readerTables)?readerTables.get(0):Constants.STRING_BLANK;
+        String readerTable = !CollectionUtils.isEmpty(readerTables) ? readerTables.get(0) : Constants.STRING_BLANK;
         dataxHbasePojo.setReaderTable(readerTable);
         dataxHbasePojo.setReaderMode(hbaseReaderDto.getReaderMode());
         dataxHbasePojo.setReaderRange(hbaseReaderDto.getReaderRange());
@@ -349,19 +350,26 @@ public class DataxJsonHelper implements DataxJsonInterface {
         DataxHbasePojo dataxHbasePojo = new DataxHbasePojo();
         dataxHbasePojo.setJdbcDatasource(writerDatasource);
         List<Map<String, Object>> columns = Lists.newArrayList();
+        List<Map<String, Object>> rowKeyColumn = Lists.newArrayList();
         for (int i = 0; i < writerColumns.size(); i++) {
             Map<String, Object> column = Maps.newLinkedHashMap();
-            column.put("index", i + 1);
+            Map<String, Object> rowKeyColumnMap = Maps.newLinkedHashMap();
+            column.put("index", i);
             column.put("name", writerColumns.get(i));
             column.put("type", "string");
+            rowKeyColumnMap.put("index",i);
+            rowKeyColumnMap.put("type","string");
             columns.add(column);
+            rowKeyColumn.add(rowKeyColumnMap);
         }
         dataxHbasePojo.setColumns(columns);
         dataxHbasePojo.setWriterHbaseConfig(writerDatasource.getZkAdress());
-        String writerTable=!CollectionUtils.isEmpty(writerTables)?writerTables.get(0):Constants.STRING_BLANK;
+        String writerTable = !CollectionUtils.isEmpty(writerTables) ? writerTables.get(0) : Constants.STRING_BLANK;
         dataxHbasePojo.setWriterTable(writerTable);
         dataxHbasePojo.setWriterVersionColumn(hbaseWriterDto.getWriterVersionColumn());
-        dataxHbasePojo.setWriterRowkeyColumn(hbaseWriterDto.getWriterRowkeyColumn());
+        String s = JSON.toJSONString(rowKeyColumn);
+        //dataxHbasePojo.setWriterRowkeyColumn(hbaseWriterDto.getWriterRowkeyColumn());
+        dataxHbasePojo.setWriterRowkeyColumn(s);
         dataxHbasePojo.setWriterMode(hbaseWriterDto.getWriterMode());
         return writerPlugin.buildHbase(dataxHbasePojo);
     }

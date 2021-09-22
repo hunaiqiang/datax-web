@@ -29,23 +29,28 @@ public class JobDatasourceServiceImpl extends ServiceImpl<JobDatasourceMapper, J
 
     @Override
     public Boolean  dataSourceTest(JobDatasource jobDatasource) throws IOException {
-        if (JdbcConstants.HBASE.equals(jobDatasource.getDatasource())) {
-            return new HBaseQueryTool(jobDatasource).dataSourceTest();
+        try {
+            if (JdbcConstants.HBASE.equals(jobDatasource.getDatasource())) {
+                return new HBaseQueryTool(jobDatasource).dataSourceTest();
+            }
+            String userName = AESUtil.decrypt(jobDatasource.getJdbcUsername());
+            //  判断账密是否为密文
+            if (userName == null) {
+                jobDatasource.setJdbcUsername(AESUtil.encrypt(jobDatasource.getJdbcUsername()));
+            }
+            String pwd = AESUtil.decrypt(jobDatasource.getJdbcPassword());
+            if (pwd == null) {
+                jobDatasource.setJdbcPassword(AESUtil.encrypt(jobDatasource.getJdbcPassword()));
+            }
+            if (JdbcConstants.MONGODB.equals(jobDatasource.getDatasource())) {
+                return new MongoDBQueryTool(jobDatasource).dataSourceTest(jobDatasource.getDatabaseName());
+            }
+            BaseQueryTool queryTool = QueryToolFactory.getByDbType(jobDatasource);
+            return queryTool.dataSourceTest();
+        }catch (Exception e){
+            //获取连接信息失败
+            return false;
         }
-        String userName = AESUtil.decrypt(jobDatasource.getJdbcUsername());
-        //  判断账密是否为密文
-        if (userName == null) {
-            jobDatasource.setJdbcUsername(AESUtil.encrypt(jobDatasource.getJdbcUsername()));
-        }
-        String pwd = AESUtil.decrypt(jobDatasource.getJdbcPassword());
-        if (pwd == null) {
-            jobDatasource.setJdbcPassword(AESUtil.encrypt(jobDatasource.getJdbcPassword()));
-        }
-        if (JdbcConstants.MONGODB.equals(jobDatasource.getDatasource())) {
-            return new MongoDBQueryTool(jobDatasource).dataSourceTest(jobDatasource.getDatabaseName());
-        }
-        BaseQueryTool queryTool = QueryToolFactory.getByDbType(jobDatasource);
-        return queryTool.dataSourceTest();
     }
 
     @Override
