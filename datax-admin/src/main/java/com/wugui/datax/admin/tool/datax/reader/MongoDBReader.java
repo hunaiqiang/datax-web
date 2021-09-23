@@ -32,8 +32,10 @@ public class MongoDBReader extends BaseReaderPlugin implements DataxReaderInterf
             addressList = str.substring(0, str.indexOf(Constants.SPLIT_DIVIDE)).split(Constants.SPLIT_COMMA);
         }
         parameterObj.put("address", addressList);
-        parameterObj.put("userName", dataSource.getJdbcUsername() == null ? Constants.STRING_BLANK : dataSource.getJdbcUsername());
-        parameterObj.put("userPassword", dataSource.getJdbcPassword() == null ? Constants.STRING_BLANK : dataSource.getJdbcPassword());
+        //parameterObj.put("userName", dataSource.getJdbcUsername() == null ? Constants.STRING_BLANK : dataSource.getJdbcUsername());
+        //parameterObj.put("userPassword", dataSource.getJdbcPassword() == null ? Constants.STRING_BLANK : dataSource.getJdbcPassword());
+        parameterObj.put("userName", (str.split("@")[0]).split(":")[0]);
+        parameterObj.put("userPassword", (str.split("@")[0]).split(":")[1]);
         parameterObj.put("dbName", dataSource.getDatabaseName());
         parameterObj.put("collectionName", plugin.getReaderTable());
         parameterObj.put("column", plugin.getColumns());

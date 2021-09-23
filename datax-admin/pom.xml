@@ -237,6 +237,10 @@
             <version>${hadoop.version}</version>
             <exclusions>
                 <exclusion>
+                    <artifactId>hbase-zookeeper</artifactId>
+                    <groupId>org.apache.hbase</groupId>
+                </exclusion>
+                <exclusion>
                     <artifactId>slf4j-log4j12</artifactId>
                     <groupId>org.slf4j</groupId>
                 </exclusion>
@@ -366,6 +370,10 @@
                 </exclusion>
                 <exclusion>
                     <artifactId>hbase-client</artifactId>
+                    <groupId>org.apache.hbase</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>hbase-zookeeper</artifactId>
                     <groupId>org.apache.hbase</groupId>
                 </exclusion>
                 <exclusion>
@@ -593,6 +601,10 @@
                     <groupId>org.slf4j</groupId>
                 </exclusion>
                 <exclusion>
+                    <artifactId>hbase-zookeeper</artifactId>
+                    <groupId>org.apache.hbase</groupId>
+                </exclusion>
+                <exclusion>
                     <artifactId>jetty-util</artifactId>
                     <groupId>org.mortbay.jetty</groupId>
                 </exclusion>
@@ -619,6 +631,10 @@
                 <exclusion>
                     <artifactId>hadoop-common</artifactId>
                     <groupId>org.apache.hadoop</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>zookeeper</artifactId>
+                    <groupId>org.apache.zookeeper</groupId>
                 </exclusion>
                 <exclusion>
                     <artifactId>avro</artifactId>
@@ -673,8 +689,8 @@
                     <groupId>org.apache.hadoop</groupId>
                 </exclusion>
                 <exclusion>
-                    <artifactId>zookeeper</artifactId>
-                    <groupId>org.apache.zookeeper</groupId>
+                    <artifactId>hbase-zookeeper</artifactId>
+                    <groupId>org.apache.hbase</groupId>
                 </exclusion>
                 <exclusion>
                     <artifactId>commons-math3</artifactId>
